@@ -7,6 +7,15 @@
       break;
     }
   }
+
+  function get_icon($folder){
+    $locations = ["favicon.ico","favicon.png","images/favicon.ico","img/favicon.ico","assets/img/favicon.ico"];
+    foreach ($locations as $location) {
+      if(file_exists($folder."/".$location)) {
+						return $folder."/".$location;
+			}
+    }
+  }
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -43,7 +52,7 @@
                 <br><br>
                 <!-- <h2 class="header left-align purple-text">Welcome User :</h2>-->
                 <div class="row left-align">
-                    <h5 class="header col s12 light">Welcome User :</h5>
+                    <h5 class="header col s12 light">Welcome developer :</h5>
                 </div>
 
             </div>
@@ -126,41 +135,35 @@
                                            ?>
                                             </div>
                                         </li>
-                                       
+
                                     </ul>
                                 </div>
                                 <div id="root">Document Root: <b><?php print ($_SERVER['DOCUMENT_ROOT']); ?></b><br />
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Folder Name</th>
-                                                <th>Date Modified</th>
-                                            </tr>
-                                        </thead>
+                                    <ul class="collection">
+                                        <?php if ($projectCount > 0) : ?>
+                                        <?php foreach ($dirArray as $dir):
+                                          $modtime=date("M j, Y, g:i A", filemtime($dir));
+                                          ?>
+                                        <li class="collection-item avatar">
+                                          <?php if(get_icon($dir) != null){?>
+                                            <img src="<?= get_icon($dir); ?>" alt="" class="circle">
+                                          <?php }else{ ?>
+                                            <i class="material-icons circle">folder</i>
+                                          <?php } ?>
+                                            <span class="title"><?php echo $dir ;?></span>
+                                            <p>Last mofied at :
+                                                <?= $modtime; ?>
+                                            </p>
+                                            <a href="http://localhost/<?php echo $dir ;?>" target="_blank" class="secondary-content"><i class="material-icons">open_in_new</i></a>
+                                        </li>
 
-                                        <tbody>
-                                            <?php if ($projectCount > 0) : ?>
-                                            <?php foreach ($dirArray as $dir):
-                                              $modtime=date("M j, Y, g:i A", filemtime($dir));
-                                              ?>
-                                            <tr>
-                                                <td>
-                                                    <a href="http://localhost/<?php echo $dir ;?>">
-                                                        <?php echo $dir ;?>
-                                                    </a>
-                                                </td>
-                                                <td><?= $modtime; ?></td>
-                                            </tr>
-                                            <?php endforeach; ?>
-                                            <?php else: ?>
-                                            <tr>
-                                                <td>
-                                                    <a href="#">Nothing here, start adding projects to your server.</a>
-                                                </td>
-                                            </tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                    </ul>
+
+
+                                    <?php endif; ?>
+
                                 </div>
                             </div>
                         </div>
