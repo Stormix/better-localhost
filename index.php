@@ -98,7 +98,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Localhost/</title>
+        <title>Localhost /</title>
         <meta name="description" content="DESCRIPTION">
         <!--Import Google Icon Font-->
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -117,7 +117,7 @@
 
     <body>
         <nav class="purple darken-2" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Localhost</a>
+            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo"><i class="devicons devicons-terminal_badge" style="font-size: 2em;"></i>Localhost</a>
                 <ul class="right hide-on-med-and-down">
                     <li><a target="_blank" href="/?q=info">PHP info</a></li>
                 </ul>
