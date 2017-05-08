@@ -28,7 +28,71 @@
   closedir($rootDir);                         // close directory
   $projectCount = count($dirArray) ;          // count elements in array
   if ($projectCount > 0) { sort($dirArray); } // sort 'em
-?>
+
+  $user_agent     =   $_SERVER['HTTP_USER_AGENT'];
+  function getOS() {
+      global $user_agent;
+      $os_platform    =   "Unknown OS Platform";
+      $os_array       =   array(
+                              '/windows nt 10/i'     =>  'Windows 10',
+                              '/windows nt 6.3/i'     =>  'Windows 8.1',
+                              '/windows nt 6.2/i'     =>  'Windows 8',
+                              '/windows nt 6.1/i'     =>  'Windows 7',
+                              '/windows nt 6.0/i'     =>  'Windows Vista',
+                              '/windows nt 5.2/i'     =>  'Windows Server 2003/XP x64',
+                              '/windows nt 5.1/i'     =>  'Windows XP',
+                              '/windows xp/i'         =>  'Windows XP',
+                              '/windows nt 5.0/i'     =>  'Windows 2000',
+                              '/windows me/i'         =>  'Windows ME',
+                              '/win98/i'              =>  'Windows 98',
+                              '/win95/i'              =>  'Windows 95',
+                              '/win16/i'              =>  'Windows 3.11',
+                              '/macintosh|mac os x/i' =>  'Mac OS X',
+                              '/mac_powerpc/i'        =>  'Mac OS 9',
+                              '/linux/i'              =>  'Linux',
+                              '/ubuntu/i'             =>  'Ubuntu',
+                              '/iphone/i'             =>  'iPhone',
+                              '/ipod/i'               =>  'iPod',
+                              '/ipad/i'               =>  'iPad',
+                              '/android/i'            =>  'Android',
+                              '/blackberry/i'         =>  'BlackBerry',
+                              '/webos/i'              =>  'Mobile'
+                          );
+      foreach ($os_array as $regex => $value) {
+          if (preg_match($regex, $user_agent)) {
+              $os_platform    =   $value;
+          }
+      }
+      return $os_platform;
+  }
+  function getBrowser() {
+      global $user_agent;
+      $browser        =   "Unknown Browser";
+      $browser_array  =   array(
+                              '/msie/i'       =>  'Internet Explorer',
+                              '/firefox/i'    =>  'Firefox',
+                              '/safari/i'     =>  'Safari',
+                              '/chrome/i'     =>  'Chrome',
+                              '/edge/i'       =>  'Edge',
+                              '/opera/i'      =>  'Opera',
+                              '/netscape/i'   =>  'Netscape',
+                              '/maxthon/i'    =>  'Maxthon',
+                              '/konqueror/i'  =>  'Konqueror',
+                              '/mobile/i'     =>  'Handheld Browser'
+                          );
+      foreach ($browser_array as $regex => $value) {
+
+          if (preg_match($regex, $user_agent)) {
+              $browser    =   $value;
+          }
+
+      }
+      return $browser;
+  }
+
+  $user_os        =   getOS();
+  $user_browser   =   getBrowser();
+ ?>
     <!DOCTYPE html>
     <html lang="en">
 
@@ -84,30 +148,30 @@
                             </ul>
                         </div>
                         <div class="card-content grey lighten-4">
-                            <div id="soft">
-                                <?= $_SERVER['SERVER_SOFTWARE']; ?>
-                                <hr>
-                                <?php
-                                echo "<table border = '2' style='color:#ffffff;'>";
-                                $i = 0;
-                                foreach($_SERVER as $key=>$value){
-                                if($i%2 == 0) {
-                                echo "<tr bgcolor='#993300'>";
-                                } else {
-                                echo "<tr bgcolor='#0099FF'>";
-                                }
-                                echo "<td>";
-                                echo $key;
-                                echo "</td>";
-                                echo "<td>";
-                                echo $value;
-                                echo "</td>";
-                                echo "</tr>";
-                                $i++;
-                                }
-                                echo "</table>";
-                                 ?>
-                            </div>
+                          <div class="row">
+                            <div class="col s12" id="soft">
+                              <ul class="collection">
+                                <li class="collection-item avatar">
+                                  <i class="devicons devicons-windows circle blue lighten-1"></i>
+                                  <span class="title"><b>OS: </b></span>
+                                  <p><?= $user_os; ?></p>
+                                </li>
+                                <li class="collection-item avatar">
+                                  <i class="devicons devicons-chrome circle yellow lighten-1"></i>
+                                  <span class="title"><b>Browser: </b></span>
+                                  <p><?= $user_browser; ?></p>
+                                </li>
+                                    <?php
+                                    $keys = ['SERVER_NAME','SERVER_SOFTWARE','PHP_SELF'];
+                                    foreach($keys as $key){ ?>
+                                      <li class="collection-item avatar">
+                                        <i class="devicons devicons-terminal_badge circle black"></i>
+                                        <span class="title"><b><?= $key; ?>:</b></span>
+                                        <p><?= $_SERVER[$key]; ?></p>
+                                      </li>
+                                    <?php } ?>
+                              </ul>
+                            </div></div>
                             <div id="php">
                                 <ul class="collection">
 
@@ -154,7 +218,7 @@
 
                                 </ul>
                             </div>
-                            <div id="root">Document Root: <b><?= $_SERVER['DOCUMENT_ROOT']); ?></b><br />
+                            <div id="root">Document Root: <b><?= $_SERVER['DOCUMENT_ROOT']; ?></b><br />
                                 <ul class="collection">
                                     <?php
                                     if ($projectCount > 0) :
@@ -168,7 +232,7 @@
                                         <i class="material-icons circle">folder</i>
                                         <?php } ?>
                                         <span class="title"><?= $dir ;?></span>
-                                        <p>Last mofied at : <b><?= $modtime; ?></b></p>
+                                        <p>Last modified at : <b><?= $modtime; ?></b></p>
                                         <a href="http://localhost/<?= $dir ;?>" target="_blank" class="secondary-content"><i class="material-icons">open_in_new</i></a>
                                     </li>
                                     <?php endforeach; ?>
@@ -195,9 +259,9 @@
 
 
             <div class="footer-copyright">
-                <div class="container">
+                <div class="container"><b>
                     Made by <a class="purple-text text-lighten-3" href="https://stormix.co">Stormix</a>
-                </div>
+              </b>  </div>
             </div>
         </footer>
 
